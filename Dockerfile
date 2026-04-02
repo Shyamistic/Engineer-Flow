@@ -16,7 +16,7 @@ RUN npx ng build --configuration production --output-path /angular-dist --base-h
 # ─────────────────────────────────────────────────────────────
 # Stage 2: Build .NET backend
 # ─────────────────────────────────────────────────────────────
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS backend-build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-build
 
 WORKDIR /src
 
@@ -31,7 +31,7 @@ RUN dotnet publish -c Release -o /app/publish --no-restore
 # ─────────────────────────────────────────────────────────────
 # Stage 3: Final runtime image
 # ─────────────────────────────────────────────────────────────
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 
 WORKDIR /app
 
@@ -39,7 +39,8 @@ WORKDIR /app
 COPY --from=backend-build /app/publish ./
 
 # Copy Angular build into wwwroot (served as static files)
-COPY --from=frontend-build /angular-dist ./wwwroot
+# In Angular 18, assets are nested in a /browser subfolder
+COPY --from=frontend-build /angular-dist/browser ./wwwroot
 
 # Persistent volume for SQLite database
 VOLUME ["/app/data"]
