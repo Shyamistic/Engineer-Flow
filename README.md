@@ -20,6 +20,7 @@
 - **📊 Real-time Dashboard** — Live summary statistics with trend indicators and quick actions
 - **⚠️ Smart Alerts** — Visual indicators for overdue requests and critical priorities
 - **🎨 Modern UI/UX** — Material Design with dark theme, responsive layout, and smooth animations
+- **📁 Compliance Audit Trail** — Verifiable action history for every request (tracking creation, status changes, and assignments)
 
 ### 🚀 Production Features
 - **🔒 Security** — Input validation, XSS protection, CORS configuration
@@ -35,15 +36,13 @@
 ## 🏗️ Architecture
 
 ### Tech Stack
-| Layer | Technology | Why |
-|---|---|---|
-| **Backend** | ASP.NET Core 8 Web API | Mature, performant, strongly typed with built-in DI |
+| **Backend** | ASP.NET Core 10 (Preview) | Mature, performant, strongly typed with built-in DI |
 | **Frontend** | Angular 18 (Standalone) | Modern component architecture, excellent tooling |
 | **Database** | SQLite via EF Core | Zero-install, portable, fully relational |
-| **ORM** | Entity Framework Core 8 | Code-First migrations, LINQ, change tracking |
+| **ORM** | Entity Framework Core 10 | Code-First migrations, LINQ, change tracking |
 | **UI Framework** | Angular Material + Custom SCSS | Accessible components with full design control |
 | **API Docs** | Swagger/OpenAPI + Scalar | Interactive testing and beautiful documentation |
-| **Deployment** | Docker, IIS, Nginx | Flexible deployment options for any environment |
+| **Deployment** | Docker & Render.com | Fully containerized with one-click cloud deployment |
 
 ### Design Principles
 - **🎯 Domain-Driven Design** — Clear separation of concerns with service layer
@@ -143,10 +142,10 @@ ng serve --open
 ### 🌐 Access Points
 | Service | URL | Description |
 |---|---|---|
-| **Application** | http://localhost:4200 | Main application interface |
-| **API** | http://localhost:5000 | REST API endpoints |
-| **API Docs** | http://localhost:5000/scalar/v1 | Interactive API documentation |
-| **Health Check** | http://localhost:5000/health | Application health status |
+| **Live Demo** | [https://engineer-flow.onrender.com](https://engineer-flow.onrender.com) | **Stable Production Environment** |
+| **Application (Local)** | http://localhost:8080 | Main application interface (Docker) |
+| **API Docs** | http://localhost:8080/scalar/v1 | Interactive API documentation |
+| **Health Check** | http://localhost:8080/health | Application health status |
 
 ---
 
