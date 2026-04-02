@@ -81,6 +81,30 @@ import { CompletionDialogComponent } from '../../../shared/dialogs/completion-di
               </div>
             </div>
           </div>
+
+          <!-- Audit Trail (Compliance Feature) -->
+          <div class="activity-card">
+            <div class="section-header">
+              <h3>📁 Audit Trail</h3>
+              <span class="compliance-badge">Compliance Secure</span>
+            </div>
+            <div class="timeline" *ngIf="request()!.activityLogs?.length; else noActivity">
+              <div class="timeline-item" *ngFor="let log of request()!.activityLogs">
+                <div class="timeline-marker" [class]="'action-' + log.action.toLowerCase()"></div>
+                <div class="timeline-content">
+                  <div class="timeline-top">
+                    <span class="action-label">{{ log.action }}</span>
+                    <span class="timeline-time">{{ log.timestamp | date:'short' }}</span>
+                  </div>
+                  <p class="timeline-details">{{ log.details }}</p>
+                  <span class="timeline-user" *ngIf="log.user">By: {{ log.user }}</span>
+                </div>
+              </div>
+            </div>
+            <ng-template #noActivity>
+              <p class="empty-state">No activity logs recorded yet.</p>
+            </ng-template>
+          </div>
         </div>
 
         <!-- Sidebar -->
@@ -402,6 +426,127 @@ import { CompletionDialogComponent } from '../../../shared/dialogs/completion-di
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin-bottom: 16px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Audit Trail Styles */
+    .activity-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .section-header h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin: 0;
+    }
+
+    .compliance-badge {
+      font-size: 9px;
+      background: rgba(16,185,129,0.1);
+      color: var(--color-success);
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding-left: 8px;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 20px;
+      padding-bottom: 24px;
+      position: relative;
+    }
+
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 10px;
+      bottom: 0;
+      width: 1px;
+      background: var(--color-border);
+    }
+
+    .timeline-item:last-child::before { display: none; }
+
+    .timeline-marker {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--color-border);
+      border: 2px solid var(--color-bg);
+      z-index: 1;
+      margin-top: 6px;
+    }
+
+    .action-created { background: #60a5fa; box-shadow: 0 0 0 4px rgba(96,165,250,0.1); }
+    .action-updated { background: #fbbf24; box-shadow: 0 0 0 4px rgba(251,191,36,0.1); }
+    .action-completed { background: #34d399; box-shadow: 0 0 0 4px rgba(52,211,153,0.1); }
+    .action-deleted { background: #f87171; box-shadow: 0 0 0 4px rgba(248,113,113,0.1); }
+
+    .timeline-content { flex: 1; }
+
+    .timeline-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .action-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .timeline-time {
+      font-size: 11px;
+      color: var(--color-text-muted);
+    }
+
+    .timeline-details {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin: 0 0 4px 0;
+      line-height: 1.5;
+    }
+
+    .timeline-user {
+      font-size: 11px;
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+
+    .empty-state {
+      color: var(--color-text-muted);
+      font-size: 13px;
+      font-style: italic;
+      text-align: center;
+      padding: 20px 0;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }

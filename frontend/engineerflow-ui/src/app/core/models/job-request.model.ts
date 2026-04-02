@@ -1,6 +1,14 @@
 export enum Priority { Low = 0, Medium = 1, High = 2, Critical = 3 }
 export enum RequestStatus { Open = 0, InProgress = 1, OnHold = 2, Completed = 3, Cancelled = 4 }
 
+export interface ActivityLog {
+  id: number;
+  action: string;
+  details: string;
+  user: string;
+  timestamp: string;
+}
+
 export interface CompletionEvent {
   id: number;
   completedBy: string;
@@ -26,6 +34,7 @@ export interface JobRequest {
   dueDate?: string;
   isOverdue: boolean;
   completionEvent?: CompletionEvent;
+  activityLogs?: ActivityLog[];
 }
 
 export interface JobRequestSummary {
