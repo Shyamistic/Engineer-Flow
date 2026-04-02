@@ -205,6 +205,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseDefaultFiles(); // Modern SPA convenience
 app.UseStaticFiles(); // For file uploads + Angular SPA
 
 app.MapControllers();
