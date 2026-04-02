@@ -1,0 +1,26 @@
+services:
+  engineerflow:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: engineerflow:latest
+    container_name: engineerflow
+    ports:
+      - "8080:8080"       # http://localhost:8080
+    volumes:
+      - engineerflow_data:/app/data   # SQLite persists here
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DB_PATH=/app/data/engineerflow.db
+      - JwtSettings__Secret=CHANGE-THIS-TO-A-RANDOM-64-CHAR-SECRET
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  engineerflow_data:
+    driver: local

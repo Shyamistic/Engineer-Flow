@@ -1,0 +1,75 @@
+export enum Priority { Low = 0, Medium = 1, High = 2, Critical = 3 }
+export enum RequestStatus { Open = 0, InProgress = 1, OnHold = 2, Completed = 3, Cancelled = 4 }
+
+export interface CompletionEvent {
+  id: number;
+  completedBy: string;
+  completedAt: string;
+  notes?: string;
+  durationMinutes?: number;
+  resolutionSummary?: string;
+}
+
+export interface JobRequest {
+  id: number;
+  title: string;
+  description: string;
+  requesterName: string;
+  assignedTo?: string;
+  priority: Priority;
+  priorityLabel: string;
+  status: RequestStatus;
+  statusLabel: string;
+  category?: string;
+  createdAt: string;
+  updatedAt: string;
+  dueDate?: string;
+  isOverdue: boolean;
+  completionEvent?: CompletionEvent;
+}
+
+export interface JobRequestSummary {
+  total: number;
+  open: number;
+  inProgress: number;
+  onHold: number;
+  completed: number;
+  cancelled: number;
+  overdue: number;
+  critical: number;
+}
+
+export interface CreateJobRequest {
+  title: string;
+  description: string;
+  requesterName: string;
+  assignedTo?: string;
+  priority: Priority;
+  category?: string;
+  dueDate?: string;
+}
+
+export interface UpdateJobRequest {
+  title?: string;
+  description?: string;
+  assignedTo?: string;
+  priority?: Priority;
+  status?: RequestStatus;
+  category?: string;
+  dueDate?: string;
+}
+
+export interface RecordCompletion {
+  completedBy: string;
+  notes?: string;
+  durationMinutes?: number;
+  resolutionSummary?: string;
+}
+
+export interface JobRequestFilters {
+  status?: string;
+  priority?: string;
+  search?: string;
+  sortBy?: string;
+  descending?: boolean;
+}

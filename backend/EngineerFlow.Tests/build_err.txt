@@ -1,0 +1,23 @@
+﻿  Determining projects to restore...
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\EngineerFlow.API.csproj : warning NU1903: Package 'AutoMapper' 13.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x [C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.Tests\EngineerFlow.Tests.csproj]
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.Tests\EngineerFlow.Tests.csproj : warning NU1903: Package 'AutoMapper' 13.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x
+  All projects are up-to-date for restore.
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.Tests\EngineerFlow.Tests.csproj : warning NU1903: Package 'AutoMapper' 13.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\EngineerFlow.API.csproj : warning NU1903: Package 'AutoMapper' 13.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\Services\AuthService.cs(67,53): error CS0234: The type or namespace name 'HashPassword' does not exist in the namespace 'BCrypt' (are you missing an assembly reference?) [C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\EngineerFlow.API.csproj]
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\Services\AuthService.cs(68,66): error CS0234: The type or namespace name 'Verify' does not exist in the namespace 'BCrypt' (are you missing an assembly reference?) [C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\EngineerFlow.API.csproj]
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\Program.cs(105,6): error CS0411: The type arguments for method 'SqliteServiceCollectionExtensions.AddSqlite<TContext>(IServiceCollection, string?, Action<SqliteDbContextOptionsBuilder>?, Action<DbContextOptionsBuilder>?)' cannot be inferred from the usage. Try specifying the type arguments explicitly. [C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\EngineerFlow.API.csproj]
+
+Build FAILED.
+
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\EngineerFlow.API.csproj : warning NU1903: Package 'AutoMapper' 13.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x [C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.Tests\EngineerFlow.Tests.csproj]
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.Tests\EngineerFlow.Tests.csproj : warning NU1903: Package 'AutoMapper' 13.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.Tests\EngineerFlow.Tests.csproj : warning NU1903: Package 'AutoMapper' 13.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\EngineerFlow.API.csproj : warning NU1903: Package 'AutoMapper' 13.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\Services\AuthService.cs(67,53): error CS0234: The type or namespace name 'HashPassword' does not exist in the namespace 'BCrypt' (are you missing an assembly reference?) [C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\EngineerFlow.API.csproj]
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\Services\AuthService.cs(68,66): error CS0234: The type or namespace name 'Verify' does not exist in the namespace 'BCrypt' (are you missing an assembly reference?) [C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\EngineerFlow.API.csproj]
+C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\Program.cs(105,6): error CS0411: The type arguments for method 'SqliteServiceCollectionExtensions.AddSqlite<TContext>(IServiceCollection, string?, Action<SqliteDbContextOptionsBuilder>?, Action<DbContextOptionsBuilder>?)' cannot be inferred from the usage. Try specifying the type arguments explicitly. [C:\Users\shyam.BATCONSOLE\Desktop\Engineer-Flow\backend\EngineerFlow.API\EngineerFlow.API.csproj]
+    4 Warning(s)
+    3 Error(s)
+
+Time Elapsed 00:00:04.04

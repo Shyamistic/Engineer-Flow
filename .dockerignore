@@ -1,0 +1,11 @@
+**/.git
+**/.angular
+**/node_modules
+**/dist
+**/bin
+**/obj
+**/*.db
+**/*.db-shm
+**/*.db-wal
+**/build_*.txt
+frontend/engineerflow-ui/.angular/cache
