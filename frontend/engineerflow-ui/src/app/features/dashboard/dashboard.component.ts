@@ -21,7 +21,7 @@ Chart.register(...registerables);
       <!-- Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-4xl font-extrabold text-white tracking-tight">Engineering Dashboard</h1>
+          <h1 class="text-4xl font-extrabold text-theme tracking-tight">Engineering Dashboard</h1>
           <p class="text-slate-400 mt-2">Real-time job request analytics and system health.</p>
         </div>
         <div class="flex items-center gap-3 glass-card px-4 py-2" [class.text-green-400]="signalR.connectionStatus() === 'Connected'">
@@ -39,7 +39,7 @@ Chart.register(...registerables);
             </div>
             <div>
               <div class="text-sm text-slate-400 font-medium">Total Requests</div>
-              <div class="text-3xl font-bold text-white">{{ stats().totalRequests }}</div>
+              <div class="text-3xl font-bold text-theme">{{ stats().totalRequests }}</div>
             </div>
           </div>
         </div>
@@ -51,7 +51,7 @@ Chart.register(...registerables);
             </div>
             <div>
               <div class="text-sm text-slate-400 font-medium">In Progress</div>
-              <div class="text-3xl font-bold text-white">{{ stats().inProgressRequests }}</div>
+              <div class="text-3xl font-bold text-theme">{{ stats().inProgressRequests }}</div>
             </div>
           </div>
         </div>
@@ -63,7 +63,7 @@ Chart.register(...registerables);
             </div>
             <div>
               <div class="text-sm text-slate-400 font-medium">Completed</div>
-              <div class="text-3xl font-bold text-white">{{ stats().completedRequests }}</div>
+              <div class="text-3xl font-bold text-theme">{{ stats().completedRequests }}</div>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ Chart.register(...registerables);
             </div>
             <div>
               <div class="text-sm text-slate-400 font-medium">Open / Critical</div>
-              <div class="text-3xl font-bold text-white">{{ stats().openRequests }}</div>
+              <div class="text-3xl font-bold text-theme">{{ stats().openRequests }}</div>
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@ Chart.register(...registerables);
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div class="glass-card p-8">
           <div class="flex items-center justify-between mb-8">
-             <h3 class="text-xl font-bold text-white flex items-center gap-2">
+             <h3 class="text-xl font-bold text-theme flex items-center gap-2">
                 <lucide-icon name="activity" size="20" class="text-primary-400"></lucide-icon>
                 Monthly Trends
              </h3>
@@ -97,7 +97,7 @@ Chart.register(...registerables);
 
         <div class="glass-card p-8">
           <div class="flex items-center justify-between mb-8">
-             <h3 class="text-xl font-bold text-white flex items-center gap-2">
+             <h3 class="text-xl font-bold text-theme flex items-center gap-2">
                 <lucide-icon name="filter" size="20" class="text-primary-400"></lucide-icon>
                 Category Distribution
              </h3>
@@ -112,7 +112,7 @@ Chart.register(...registerables);
         <!-- Recent Activity Feed -->
         <div class="glass-card p-8">
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+            <h3 class="text-xl font-bold text-theme flex items-center gap-2">
               <lucide-icon name="file-text" size="20" class="text-blue-400"></lucide-icon>
                System Activity Logs
             </h3>
@@ -123,7 +123,7 @@ Chart.register(...registerables);
                 <div [class]="'w-1.5 h-10 rounded-full ' + getPriorityColor(job.priority)"></div>
                 <div class="flex-1">
                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">{{ job.category || 'GENERAL' }}</div>
-                   <div class="text-sm font-bold text-slate-200 group-hover:text-white transition-colors">{{ job.title }}</div>
+                   <div class="text-sm font-bold text-theme transition-colors">{{ job.title }}</div>
                    <div class="text-xs text-slate-500 mt-1">{{ job.requesterName }} • {{ job.createdAt | date:'short' }}</div>
                 </div>
                 <div [class]="'px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ' + getStatusClass(job.statusLabel)">
@@ -140,7 +140,7 @@ Chart.register(...registerables);
         <!-- Wordwatch Intelligence Feed -->
         <div class="glass-card p-8 border-t-4 border-red-500/50">
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+            <h3 class="text-xl font-bold text-theme flex items-center gap-2">
                <lucide-icon name="shield-alert" size="20" class="text-red-400"></lucide-icon>
                Wordwatch Intelligence
             </h3>
