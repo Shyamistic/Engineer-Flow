@@ -94,7 +94,7 @@ export interface AppNotification {
     .drawer-dropdown {
       position: absolute;
       top: 100%;
-      right: 0;
+      left: 0;
       margin-top: 8px;
       width: 320px;
       background: var(--color-surface);

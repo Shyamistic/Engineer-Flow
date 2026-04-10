@@ -285,10 +285,10 @@ export class JobBoardComponent implements OnInit {
   loadData() {
     this.service.getAll().subscribe({
       next: (reqs: JobRequest[]) => {
-        this.openRequests = reqs.filter((r: JobRequest) => r.status === 0);
-        this.inProgressRequests = reqs.filter((r: JobRequest) => r.status === 1);
-        this.onHoldRequests = reqs.filter((r: JobRequest) => r.status === 2);
-        this.completedRequests = reqs.filter((r: JobRequest) => r.status === 3);
+        this.openRequests = reqs.filter((r: JobRequest) => r.status.toString() === 'Open' || r.status === 0);
+        this.inProgressRequests = reqs.filter((r: JobRequest) => r.status.toString() === 'InProgress' || r.status === 1);
+        this.onHoldRequests = reqs.filter((r: JobRequest) => r.status.toString() === 'OnHold' || r.status === 2);
+        this.completedRequests = reqs.filter((r: JobRequest) => r.status.toString() === 'Completed' || r.status === 3);
       }
     });
   }
@@ -299,12 +299,12 @@ export class JobBoardComponent implements OnInit {
     } else {
       const item = event.previousContainer.data[event.previousIndex];
       // Note: Full completion requires the completion dto, so prevent direct drag to 'Completed' unless implemented differently
-      if (newStatusValue === 3 && item.status !== 3) {
+      if (newStatusValue === 3 && item.status.toString() !== 'Completed' && item.status !== 3) {
         this.toast.warning('Please use the detail view to formally complete a ticket (requires resolution notes).');
         return;
       }
       
-      if (item.status === 3) {
+      if (item.status.toString() === 'Completed' || item.status === 3) {
         this.toast.error('Completed tickets cannot be moved.');
         return;
       }

@@ -24,6 +24,37 @@ html {
 
 // ─── Design Tokens ───────────────────────────────────────────────────────────
 :root {
+  /* Light Theme (Default) */
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-raised: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-glow: rgba(37, 99, 235, 0.25);
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+
+  --priority-low: #64748b;
+  --priority-medium: #3b82f6;
+  --priority-high: #f59e0b;
+  --priority-critical: #ef4444;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-card: 0 4px 20px rgba(0,0,0,0.05);
+  --shadow-elevated: 0 8px 30px rgba(0,0,0,0.1);
+  --transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.dark-theme {
+  /* Dark Theme */
   --color-bg: #0d1117;
   --color-surface: #161b22;
   --color-surface-raised: #21262d;
@@ -31,9 +62,6 @@ html {
   --color-accent: #3b82f6;
   --color-accent-hover: #2563eb;
   --color-accent-glow: rgba(59, 130, 246, 0.25);
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
   --color-text-primary: #e6edf3;
   --color-text-secondary: #8b949e;
   --color-text-muted: #6e7681;
@@ -43,13 +71,8 @@ html {
   --priority-high: #fbbf24;
   --priority-critical: #f87171;
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
   --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
   --shadow-elevated: 0 8px 40px rgba(0,0,0,0.5);
-  --transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 // ─── Base Reset ──────────────────────────────────────────────────────────────
@@ -176,7 +199,6 @@ select.input-field {
 .flex-1 { flex: 1; }
 .flex-wrap { flex-wrap: wrap; }
 .items-center { align-items: center; }
-.items-start { align-items: flex-start; }
 .justify-between { justify-content: space-between; }
 .justify-center { justify-content: center; }
 .justify-end { justify-content: flex-end; }

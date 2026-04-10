@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
@@ -11,7 +11,13 @@ import { NotificationDrawerComponent } from './notification-drawer.component';
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, LucideAngularModule, NotificationDrawerComponent],
   template: `
-    <div class="app-shell">
+    <div class="app-shell" [class.sidebar-closed]="!isSidebarOpen()">
+      
+      <!-- Floating Burger Toggle (Visible when Sidebar is Closed) -->
+      <button class="burger-toggle" (click)="toggleSidebar()" title="Open Sidebar">
+        <lucide-icon name="menu" size="24"></lucide-icon>
+      </button>
+
       <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar-brand">
@@ -21,27 +27,28 @@ import { NotificationDrawerComponent } from './notification-drawer.component';
             </div>
             <span class="brand-name">EngineerFlow</span>
           </div>
-          <app-notification-drawer></app-notification-drawer>
+          <div class="brand-actions">
+            <app-notification-drawer></app-notification-drawer>
+            <button class="close-sidebar-btn" (click)="toggleSidebar()" title="Close Sidebar">
+              <lucide-icon name="x" size="20"></lucide-icon>
+            </button>
+          </div>
         </div>
 
         <nav class="sidebar-nav">
-          <a routerLink="/dashboard" routerLinkActive="nav-active"
-             class="nav-item">
+          <a routerLink="/dashboard" routerLinkActive="nav-active" class="nav-item">
             <lucide-icon name="layout-dashboard" size="20"></lucide-icon>
             <span>Dashboard</span>
           </a>
-          <a routerLink="/requests" routerLinkActive="nav-active"
-             class="nav-item">
+          <a routerLink="/requests" routerLinkActive="nav-active" class="nav-item">
             <lucide-icon name="clipboard-list" size="20"></lucide-icon>
             <span>Job Requests</span>
           </a>
-          <a routerLink="/jobs" routerLinkActive="nav-active"
-             class="nav-item">
+          <a routerLink="/jobs" routerLinkActive="nav-active" class="nav-item">
             <lucide-icon name="activity" size="20"></lucide-icon>
             <span>Job Board</span>
           </a>
-          <a routerLink="/audit" routerLinkActive="nav-active"
-             class="nav-item nav-audit">
+          <a routerLink="/audit" routerLinkActive="nav-active" class="nav-item nav-audit">
             <lucide-icon name="shield-check" size="20"></lucide-icon>
             <span>Audit Trail</span>
           </a>
@@ -88,6 +95,39 @@ import { NotificationDrawerComponent } from './notification-drawer.component';
       height: 100vh;
       overflow: hidden;
       background: var(--color-bg);
+      position: relative;
+    }
+
+    .burger-toggle {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      z-index: 50;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 10px;
+      color: var(--color-text-primary);
+      cursor: pointer;
+      box-shadow: var(--shadow-elevated);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transform: scale(1) translateX(0);
+    }
+
+    .burger-toggle:hover {
+      background: var(--color-surface-raised);
+      transform: scale(1.05);
+      border-color: var(--color-accent);
+    }
+
+    .app-shell:not(.sidebar-closed) .burger-toggle {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.8) translateX(-20px);
     }
 
     .sidebar {
@@ -98,26 +138,56 @@ import { NotificationDrawerComponent } from './notification-drawer.component';
       display: flex;
       flex-direction: column;
       padding: 0;
+      transition: margin-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+    }
+
+    .app-shell.sidebar-closed .sidebar {
+      margin-left: -260px;
+      box-shadow: none;
     }
 
     .sidebar-brand {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 24px 20px;
+      gap: 8px;
+      padding: 24px 16px;
       border-bottom: 1px solid var(--color-border);
     }
 
     .brand-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+    }
+
+    .brand-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .close-sidebar-btn {
+      background: none;
+      border: none;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      transition: var(--transition);
+    }
+    
+    .close-sidebar-btn:hover {
+      color: var(--color-text-primary);
+      background: rgba(255,255,255,0.06);
     }
 
     .brand-icon {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       background: linear-gradient(135deg, var(--color-accent), #6366f1);
       border-radius: 10px;
       display: flex;
@@ -128,7 +198,7 @@ import { NotificationDrawerComponent } from './notification-drawer.component';
     }
 
     .brand-name {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--color-text-primary);
       letter-spacing: -0.3px;
@@ -274,6 +344,11 @@ import { NotificationDrawerComponent } from './notification-drawer.component';
       padding: 32px;
       scrollbar-width: thin;
       scrollbar-color: var(--color-border) transparent;
+      transition: padding-top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .app-shell.sidebar-closed .main-content {
+      padding-top: 84px; /* Space for burger button */
     }
 
     .main-content::-webkit-scrollbar {
@@ -293,6 +368,12 @@ import { NotificationDrawerComponent } from './notification-drawer.component';
 export class LayoutComponent {
   authService = inject(AuthService);
   themeService = inject(ThemeService);
+  
+  isSidebarOpen = signal<boolean>(window.innerWidth > 768);
+
+  toggleSidebar() {
+    this.isSidebarOpen.set(!this.isSidebarOpen());
+  }
 
   logout() {
     this.authService.logout();
