@@ -17,10 +17,16 @@
 - **📋 Advanced Request Management** — Searchable, filterable, sortable list with priority and status badges
 - **🔄 Status Workflow** — Seamless status transitions (Open → In Progress → On Hold → Completed / Cancelled)
 - **✅ Completion Tracking** — Dedicated completion forms with resolution notes, duration tracking, and timestamps
-- **📊 Real-time Dashboard** — Live summary statistics with trend indicators and quick actions
-- **⚠️ Smart Alerts** — Visual indicators for overdue requests and critical priorities
-- **🎨 Modern UI/UX** — Material Design with dark theme, responsive layout, and smooth animations
-- **📁 Compliance Audit Trail** — Verifiable action history for every request (tracking creation, status changes, and assignments)
+- **📊 Real-time Dashboard** — Live summary statistics with trend indicators, activity logs, and real-time event widgets
+- **🎨 Modern UI/UX** — Material Design with glassmorphism, dynamic theme watcher (Light/Dark/System), and Command Palette (Ctrl+K)
+- **🗂️ Agile Kanban Board** — Drag-and-drop job status management using `@angular/cdk/drag-drop`
+- **📁 Compliance Audit Trail** — Verifiable action history for every request tracking creation, status changes, and assignments
+
+### 🛡️ Enterprise & Security Hardening
+- **👁️ Wordwatch Intelligence API** — Real-time NLP scanning of audit logs for flagged compliance buzzwords
+- **🕸️ Global Webhook Dispatcher** — Automatically broadcasts security alerts to external SIEM tools
+- **💾 Safe Deletion & Snapshots** — EF Core Soft Delete capabilities (`IsDeleted`) with a compliance DB Archive system
+- **🛡️ Rate Limiting & Caching** — Hardened API endpoints with AspNetCore Output Caching and Fixed-Window Rate Limiting
 
 ### 🚀 Production Features
 - **🔒 Security** — Input validation, XSS protection, CORS configuration

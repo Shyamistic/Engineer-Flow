@@ -679,12 +679,12 @@ export class AuditTrailComponent implements OnInit, OnDestroy {
     if (entry && entry.id) {
       this.liveCount.update(c => c + 1);
     }
-  });
+  }, { allowSignalWrites: true });
 
   private connectionEffect = effect(() => {
     const status = this.signalR.connectionStatus();
     this.isLive.set(status === 'Connected');
-  });
+  }, { allowSignalWrites: true });
 
   ngOnInit() {
     this.loadActionTypes();
