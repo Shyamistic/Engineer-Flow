@@ -49,6 +49,10 @@ ENV DB_PATH=/app/data/engineerflow.db
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:8080
 
+# Disable file watching in production to avoid inotify limit crashes
+ENV DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false
+ENV DOTNET_USE_POLLING_FILE_WATCHER=false
+
 EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "EngineerFlow.API.dll"]
