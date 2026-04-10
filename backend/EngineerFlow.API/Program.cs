@@ -215,12 +215,21 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+using Microsoft.AspNetCore.HttpOverrides;
+
+// Forwarded Headers for Render Proxy
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseDefaultFiles(); // Modern SPA convenience
 app.UseStaticFiles(); // For file uploads + Angular SPA
 
+app.UseWebSockets(); // REQUIRED for SignalR WebSockets
 app.MapControllers();
 app.MapHub<JobHub>("/hubs/jobs");
 

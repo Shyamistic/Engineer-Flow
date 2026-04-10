@@ -9,7 +9,7 @@ import {
   LucideAngularModule, LayoutDashboard, ClipboardList, Settings, LogOut, Plus, Search, 
   Filter, MoreVertical, CheckCircle2, AlertCircle, Clock, FileText, Activity, 
   ShieldCheck, User, Lock, ArrowRight, UserPlus, UserCheck, RotateCw, ArrowLeft,
-  ChevronRight, ChevronDown, Check, Sun, Monitor, Moon, ShieldAlert, Bell, AlertTriangle, Info, Menu, X
+  ChevronRight, ChevronDown, Check, Sun, Monitor, Moon, ShieldAlert, Bell, AlertTriangle, CheckCircle, Info, Menu, X
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -33,7 +33,7 @@ export const appConfig: ApplicationConfig = {
         LayoutDashboard, ClipboardList, Settings, LogOut, Plus, Search, Filter, MoreVertical, 
         CheckCircle2, AlertCircle, Clock, FileText, Activity,
         ShieldCheck, User, Lock, ArrowRight, UserPlus, UserCheck, RotateCw, ArrowLeft,
-        ChevronRight, ChevronDown, Check, Sun, Monitor, Moon, ShieldAlert, Bell, AlertTriangle, Info, Menu, X
+        ChevronRight, ChevronDown, Check, Sun, Monitor, Moon, ShieldAlert, Bell, AlertTriangle, CheckCircle, Info, Menu, X
       })
     )
   ]
