@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using EngineerFlow.API.Data;
 using EngineerFlow.API.Services;
 using EngineerFlow.API.Hubs;
@@ -214,8 +215,6 @@ if (app.Environment.IsDevelopment())
         opt.WithTheme(ScalarTheme.Purple);
     });
 }
-
-using Microsoft.AspNetCore.HttpOverrides;
 
 // Forwarded Headers for Render Proxy
 app.UseForwardedHeaders(new ForwardedHeadersOptions
