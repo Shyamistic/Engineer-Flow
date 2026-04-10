@@ -9,6 +9,7 @@ public interface IJobClient
     Task JobUpdated(JobRequest job);
     Task JobDeleted(int id);
     Task StatusUpdated(int id, RequestStatus status);
+    Task AuditEntryCreated(AuditTrailEntry entry);
 }
 
 public class JobHub : Hub<IJobClient>
@@ -23,3 +24,4 @@ public class JobHub : Hub<IJobClient>
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, "JobUpdates");
     }
 }
+

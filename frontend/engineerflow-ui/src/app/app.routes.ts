@@ -22,7 +22,7 @@ export const routes: Routes = [
       },
       {
         path: 'jobs',
-        loadComponent: () => import('./features/jobs/job-list.component').then(m => m.JobListComponent)
+        loadComponent: () => import('./features/requests/job-board.component').then(m => m.JobBoardComponent)
       },
       {
         path: 'requests',
@@ -39,6 +39,10 @@ export const routes: Routes = [
       {
         path: 'requests/:id/edit',
         loadComponent: () => import('./features/requests/request-form/request-form.component').then(m => m.RequestFormComponent)
+      },
+      {
+        path: 'audit',
+        loadComponent: () => import('./features/audit/audit-trail.component').then(m => m.AuditTrailComponent)
       },
       {
         path: '',

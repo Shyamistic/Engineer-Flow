@@ -16,6 +16,7 @@ public class JobRequestServiceTests : IDisposable
     private readonly Mock<IHubContext<JobHub, IJobClient>> _hubMock;
     private readonly Mock<IHubClients<IJobClient>> _clientsMock;
     private readonly Mock<IJobClient> _clientMock;
+    private readonly Mock<IAuditService> _auditMock;
     private readonly JobRequestService _service;
 
     public JobRequestServiceTests()
@@ -28,12 +29,19 @@ public class JobRequestServiceTests : IDisposable
         _hubMock = new Mock<IHubContext<JobHub, IJobClient>>();
         _clientsMock = new Mock<IHubClients<IJobClient>>();
         _clientMock = new Mock<IJobClient>();
+        _auditMock = new Mock<IAuditService>();
 
         // Setup SignalR Mocks
         _hubMock.Setup(h => h.Clients).Returns(_clientsMock.Object);
         _clientsMock.Setup(c => c.Group(It.IsAny<string>())).Returns(_clientMock.Object);
 
-        _service = new JobRequestService(_db, _hubMock.Object);
+        // Setup Audit Mock — silently succeeds
+        _auditMock.Setup(a => a.LogAsync(
+            It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<string>(),
+            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<string?>()))
+            .Returns(Task.CompletedTask);
+
+        _service = new JobRequestService(_db, _hubMock.Object, _auditMock.Object);
     }
 
     [Fact]

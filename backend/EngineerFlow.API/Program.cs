@@ -33,6 +33,12 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IExportService, ExportService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IWordWatchService, WordWatchService>();
+builder.Services.AddScoped<IWebhookService, WebhookService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
+
+// Webhooks Output
+builder.Services.AddHttpClient("Webhooks");
 
 // SignalR
 builder.Services.AddSignalR();
@@ -137,6 +143,12 @@ builder.Services.AddResponseCompression(options =>
     options.EnableForHttps = true;
 });
 
+// Output Caching (Production Feature)
+builder.Services.AddOutputCache(options =>
+{
+    options.AddBasePolicy(b => b.Expire(TimeSpan.FromSeconds(10)));
+});
+
 // Logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -167,6 +179,7 @@ app.UseRateLimiter();
 
 // Response Compression
 app.UseResponseCompression();
+app.UseOutputCache();
 
 app.MapHealthChecks("/health");
 app.MapHealthChecks("/health/ready", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions

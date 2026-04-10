@@ -21,7 +21,8 @@ import { CompletionDialogComponent } from '../../../shared/dialogs/completion-di
           ← Back to Requests
         </button>
         <div class="header-actions">
-          <button class="btn-secondary" (click)="editRequest()">✏️ Edit</button>
+          <button class="btn-info print-hide" (click)="printReport()">🖨️ Print Report</button>
+          <button class="btn-secondary print-hide" (click)="editRequest()">✏️ Edit</button>
           <button class="btn-success" (click)="markComplete()"
                   *ngIf="request()!.status !== RequestStatus.Completed && request()!.status !== RequestStatus.Cancelled">
             ✅ Mark Complete
@@ -549,6 +550,46 @@ import { CompletionDialogComponent } from '../../../shared/dialogs/completion-di
       padding: 20px 0;
     }
 
+    /* Print Styles */
+    @media print {
+      :host {
+        display: block;
+        background: white !important;
+        color: black !important;
+      }
+      
+      .print-hide, .back-btn, .sidebar, .header-actions {
+        display: none !important;
+      }
+
+      .detail-page {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .detail-grid {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .detail-card, .completion-card, .meta-card, .activity-card {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin-bottom: 24px !important;
+        page-break-inside: avoid;
+      }
+      
+      .meta-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      h1, h3 { color: black !important; }
+      p, span { color: #333 !important; }
+    }
+
     @keyframes spin { to { transform: rotate(360deg); } }
 
     @media (max-width: 768px) {
@@ -636,5 +677,9 @@ export class RequestDetailComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/requests']);
+  }
+
+  printReport() {
+    window.print();
   }
 }

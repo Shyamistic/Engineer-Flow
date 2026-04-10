@@ -1,18 +1,21 @@
 import { Component, inject, OnInit, signal, effect, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { environment } from '../../../environments/environment';
 import { Chart, registerables } from 'chart.js';
 import { SignalRService } from '../../core/services/signalr.service';
 import { JobService } from '../../core/services/job.service';
+import { AuditService } from '../../core/services/audit.service';
+import { AuditPagedResult } from '../../core/models/job-request.model';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, RouterLink],
   template: `
     <div class="space-y-8 animate-fade-in p-2">
       <!-- Header -->
@@ -105,30 +108,71 @@ Chart.register(...registerables);
         </div>
       </div>
       
-      <!-- Recent Activity Feed (Optional) -->
-      <div class="glass-card p-8 mt-8">
-        <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-           <lucide-icon name="file-text" size="20"></lucide-icon>
-           System Activity Logs
-        </h3>
-        <div class="space-y-4">
-           <div *ngFor="let job of recentJobs()" class="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors group">
-              <div [class]="'w-2 h-10 rounded-full ' + getPriorityColor(job.priority)"></div>
-              <div class="flex-1">
-                 <div class="text-white font-semibold group-hover:text-primary-400 transition-colors uppercase text-xs tracking-widest font-mono">
-                    {{ job.category || 'NO CATEGORY' }}
-                 </div>
-                 <div class="text-lg font-bold text-white">{{ job.title }}</div>
-                 <div class="text-sm text-slate-400">Created by {{ job.requesterName }} • {{ job.createdAt | date:'short' }}</div>
-              </div>
-              <div [class]="'px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest ' + getStatusClass(job.statusLabel)">
-                 {{ job.statusLabel }}
-              </div>
-           </div>
-           
-           <div *ngIf="recentJobs().length === 0" class="text-center py-10 text-slate-500">
-               No recent activity recorded.
-           </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+        <!-- Recent Activity Feed -->
+        <div class="glass-card p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+              <lucide-icon name="file-text" size="20" class="text-blue-400"></lucide-icon>
+               System Activity Logs
+            </h3>
+            <a routerLink="/audit" class="text-xs text-blue-400 hover:underline flex items-center gap-1">View All <lucide-icon name="chevron-right" size="12"></lucide-icon></a>
+          </div>
+          <div class="space-y-4">
+             <div *ngFor="let job of recentJobs()" class="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-slate-700 transition-all group">
+                <div [class]="'w-1.5 h-10 rounded-full ' + getPriorityColor(job.priority)"></div>
+                <div class="flex-1">
+                   <div class="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">{{ job.category || 'GENERAL' }}</div>
+                   <div class="text-sm font-bold text-slate-200 group-hover:text-white transition-colors">{{ job.title }}</div>
+                   <div class="text-xs text-slate-500 mt-1">{{ job.requesterName }} • {{ job.createdAt | date:'short' }}</div>
+                </div>
+                <div [class]="'px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ' + getStatusClass(job.statusLabel)">
+                   {{ job.statusLabel }}
+                </div>
+             </div>
+             
+             <div *ngIf="recentJobs().length === 0" class="text-center py-10 text-slate-500 text-sm">
+                 No recent activity recorded.
+             </div>
+          </div>
+        </div>
+
+        <!-- Wordwatch Intelligence Feed -->
+        <div class="glass-card p-8 border-t-4 border-red-500/50">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+               <lucide-icon name="shield-alert" size="20" class="text-red-400"></lucide-icon>
+               Wordwatch Intelligence
+            </h3>
+            <a routerLink="/audit" [queryParams]="{isFlagged: true}" class="text-xs text-red-400 hover:underline flex items-center gap-1">View All <lucide-icon name="chevron-right" size="12"></lucide-icon></a>
+          </div>
+          
+          <div class="space-y-4">
+             <div *ngFor="let entry of flaggedEntries()" class="p-4 rounded-xl bg-red-500/5 border border-red-500/20 hover:bg-red-500/10 transition-colors group">
+                <div class="flex items-start gap-3">
+                  <div class="mt-1 text-red-400"><lucide-icon name="alert-triangle" size="16"></lucide-icon></div>
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <div class="text-xs font-bold text-red-400 uppercase tracking-wider">{{ entry.action }}</div>
+                      <div class="text-[10px] text-slate-500">{{ entry.timestamp | date:'short' }}</div>
+                    </div>
+                    <div class="text-sm text-slate-300 mt-1">{{ entry.details }}</div>
+                    <div class="mt-3 text-xs bg-red-500/10 text-red-300 p-2 rounded border border-red-500/20 font-mono">
+                      <strong>Reason:</strong> {{ entry.flagReason }}
+                    </div>
+                    <div class="flex items-center gap-2 mt-3 text-xs text-slate-400">
+                      <div class="w-5 h-5 rounded bg-slate-700 flex items-center justify-center text-[10px] text-white font-bold">{{ entry.user[0].toUpperCase() }}</div>
+                      <span>{{ entry.user }}</span>
+                    </div>
+                  </div>
+                </div>
+             </div>
+             
+             <div *ngIf="flaggedEntries().length === 0" class="text-center py-10 text-slate-500 text-sm flex flex-col items-center">
+                 <lucide-icon name="shield-check" size="32" class="text-green-500/40 mb-3"></lucide-icon>
+                 No compliance warnings detected. System secure.
+             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -138,6 +182,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private http = inject(HttpClient);
   signalR = inject(SignalRService);
   jobService = inject(JobService);
+  private auditService = inject(AuditService);
 
   @ViewChild('trendsChart') trendsChartRef!: ElementRef;
   @ViewChild('categoryChart') categoryChartRef!: ElementRef;
@@ -155,12 +200,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   });
 
   recentJobs = signal<any[]>([]);
+  flaggedEntries = signal<any[]>([]);
 
   constructor() {
     // Effect to update dash when SignalR event happens
     effect(() => {
-      if (this.signalR.jobCreated() || this.signalR.jobUpdated() || this.signalR.jobDeleted()) {
+      if (this.signalR.jobCreated() || this.signalR.jobUpdated() || this.signalR.jobDeleted() || this.signalR.auditEntryCreated()) {
         this.loadDashboard();
+        this.loadRecentJobs();
+        this.loadFlaggedEntries();
       }
     });
   }
@@ -168,6 +216,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.loadDashboard();
     this.loadRecentJobs();
+    this.loadFlaggedEntries();
   }
 
   ngAfterViewInit() {
@@ -187,6 +236,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private loadRecentJobs() {
     this.jobService.getAll({ sortBy: 'createdat', descending: true }).subscribe(jobs => {
       this.recentJobs.set(jobs.slice(0, 5));
+    });
+  }
+
+  private loadFlaggedEntries() {
+    this.auditService.getAuditTrail({ isFlagged: true, pageSize: 5 }).subscribe((res: AuditPagedResult) => {
+      this.flaggedEntries.set(res.items);
     });
   }
 

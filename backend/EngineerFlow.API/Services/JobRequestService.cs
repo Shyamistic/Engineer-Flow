@@ -11,11 +11,13 @@ public class JobRequestService : IJobRequestService
 {
     private readonly AppDbContext _db;
     private readonly IHubContext<JobHub, IJobClient> _hub;
+    private readonly IAuditService _audit;
 
-    public JobRequestService(AppDbContext db, IHubContext<JobHub, IJobClient> hub)
+    public JobRequestService(AppDbContext db, IHubContext<JobHub, IJobClient> hub, IAuditService audit)
     {
         _db = db;
         _hub = hub;
+        _audit = audit;
     }
 
     private static JobRequestResponseDto ToDto(JobRequest r) => new(
@@ -87,6 +89,11 @@ public class JobRequestService : IJobRequestService
         _db.JobRequests.Add(req);
         await _db.SaveChangesAsync();
 
+        // Global audit trail
+        await _audit.LogAsync("JobRequest", req.Id.ToString(), "Created",
+            $"Job Request '{req.Title}' created by {dto.RequesterName}",
+            dto.RequesterName, entityTitle: req.Title);
+
         await _hub.Clients.Group("JobUpdates").JobCreated(req);
         return ToDto(req);
     }
@@ -115,6 +122,11 @@ public class JobRequestService : IJobRequestService
             req.UpdatedAt = DateTime.UtcNow;
             req.ActivityLogs.Add(new ActivityLog { Action = "Updated", Details = string.Join(", ", details) });
             await _db.SaveChangesAsync();
+
+            // Global audit trail
+            await _audit.LogAsync("JobRequest", req.Id.ToString(), "Updated",
+                string.Join(", ", details), entityTitle: req.Title);
+
             await _hub.Clients.Group("JobUpdates").JobUpdated(req);
         }
 
@@ -155,6 +167,12 @@ public class JobRequestService : IJobRequestService
         }
 
         await _db.SaveChangesAsync();
+
+        // Global audit trail
+        await _audit.LogAsync("JobRequest", req.Id.ToString(), "Completed",
+            $"Completed by {dto.CompletedBy}. Notes: {dto.Notes}",
+            dto.CompletedBy, entityTitle: req.Title);
+
         await _hub.Clients.Group("JobUpdates").JobUpdated(req);
         return ToDto(req);
     }
@@ -163,9 +181,30 @@ public class JobRequestService : IJobRequestService
     {
         var req = await _db.JobRequests.FindAsync(id);
         if (req == null) return false;
-        _db.JobRequests.Remove(req);
+
+        // Log BEFORE removing — ensures audit persists after cascade delete
+        await _audit.LogAsync("JobRequest", req.Id.ToString(), "Deleted",
+            $"Job Request '{req.Title}' deleted permanently", entityTitle: req.Title);
+
+        // Soft Delete
+        req.IsDeleted = true;
         await _db.SaveChangesAsync();
         await _hub.Clients.Group("JobUpdates").JobDeleted(id);
+        return true;
+    }
+
+    public async Task<bool> RestoreAsync(int id)
+    {
+        var req = await _db.JobRequests.IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Id == id);
+        if (req == null || !req.IsDeleted) return false;
+
+        req.IsDeleted = false;
+        
+        await _audit.LogAsync("JobRequest", req.Id.ToString(), "Restored",
+            $"Job Request '{req.Title}' restored from trash", entityTitle: req.Title);
+
+        await _db.SaveChangesAsync();
+        await _hub.Clients.Group("JobUpdates").JobCreated(req); // Re-broadcast as created
         return true;
     }
 

@@ -12,6 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
     public DbSet<Attachment> Attachments => Set<Attachment>();
+    public DbSet<AuditTrailEntry> AuditTrailEntries => Set<AuditTrailEntry>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -40,6 +41,8 @@ public class AppDbContext : DbContext
                   .WithOne()
                   .HasForeignKey(l => l.JobRequestId)
                   .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasQueryFilter(e => !e.IsDeleted);
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -62,6 +65,17 @@ public class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.CompletedBy).IsRequired().HasMaxLength(100);
+        });
+
+        // Global audit trail — NO FK relationship, intentionally immutable
+        modelBuilder.Entity<AuditTrailEntry>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.EntityType).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Action).IsRequired().HasMaxLength(100);
+            entity.HasIndex(e => e.Timestamp);
+            entity.HasIndex(e => e.EntityType);
+            entity.HasIndex(e => e.Action);
         });
     }
 }

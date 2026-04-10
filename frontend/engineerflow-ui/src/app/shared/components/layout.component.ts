@@ -2,21 +2,26 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { CommonModule } from '@angular/common';
+import { NotificationDrawerComponent } from './notification-drawer.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, LucideAngularModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, LucideAngularModule, NotificationDrawerComponent],
   template: `
     <div class="app-shell">
       <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar-brand">
-          <div class="brand-icon">
-            <lucide-icon name="clipboard-list" size="22" class="text-white"></lucide-icon>
+          <div class="brand-left">
+            <div class="brand-icon">
+              <lucide-icon name="clipboard-list" size="22" class="text-white"></lucide-icon>
+            </div>
+            <span class="brand-name">EngineerFlow</span>
           </div>
-          <span class="brand-name">EngineerFlow</span>
+          <app-notification-drawer></app-notification-drawer>
         </div>
 
         <nav class="sidebar-nav">
@@ -35,9 +40,27 @@ import { CommonModule } from '@angular/common';
             <lucide-icon name="activity" size="20"></lucide-icon>
             <span>Job Board</span>
           </a>
+          <a routerLink="/audit" routerLinkActive="nav-active"
+             class="nav-item nav-audit">
+            <lucide-icon name="shield-check" size="20"></lucide-icon>
+            <span>Audit Trail</span>
+          </a>
         </nav>
 
         <div class="sidebar-footer">
+          <!-- Theme Toggle -->
+          <div class="theme-toggle">
+            <button class="theme-btn" [class.active]="themeService.activeTheme() === 'light'" (click)="themeService.setTheme('light')" title="Light Mode">
+              <lucide-icon name="sun" size="18"></lucide-icon>
+            </button>
+            <button class="theme-btn" [class.active]="themeService.activeTheme() === 'system'" (click)="themeService.setTheme('system')" title="System Match">
+              <lucide-icon name="monitor" size="18"></lucide-icon>
+            </button>
+            <button class="theme-btn" [class.active]="themeService.activeTheme() === 'dark'" (click)="themeService.setTheme('dark')" title="Dark Mode">
+              <lucide-icon name="moon" size="18"></lucide-icon>
+            </button>
+          </div>
+
           <div class="user-card">
             <div class="user-avatar">
               {{ authService.currentUser()?.username?.[0]?.toUpperCase() }}
@@ -80,9 +103,16 @@ import { CommonModule } from '@angular/common';
     .sidebar-brand {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 12px;
       padding: 24px 20px;
       border-bottom: 1px solid var(--color-border);
+    }
+
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .brand-icon {
@@ -139,6 +169,42 @@ import { CommonModule } from '@angular/common';
     .sidebar-footer {
       padding: 16px 12px;
       border-top: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      display: flex;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .theme-btn {
+      flex: 1;
+      height: 28px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .theme-btn:hover {
+      color: var(--color-text-primary);
+    }
+
+    .theme-btn.active {
+      background: rgba(255,255,255,0.08);
+      color: var(--color-accent);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .user-card {
@@ -226,6 +292,7 @@ import { CommonModule } from '@angular/common';
 })
 export class LayoutComponent {
   authService = inject(AuthService);
+  themeService = inject(ThemeService);
 
   logout() {
     this.authService.logout();

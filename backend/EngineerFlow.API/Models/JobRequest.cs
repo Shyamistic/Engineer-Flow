@@ -39,6 +39,8 @@ public class JobRequest
     public ICollection<Attachment> Attachments { get; set; } = new List<Attachment>();
 
     public ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();
+
+    public bool IsDeleted { get; set; } = false;
 }
 
 public enum Priority { Low = 0, Medium = 1, High = 2, Critical = 3 }

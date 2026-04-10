@@ -17,6 +17,7 @@ public class AnalyticsController : ControllerBase
     }
 
     [HttpGet("dashboard")]
+    [Microsoft.AspNetCore.OutputCaching.OutputCache(Duration = 10)]
     public async Task<ActionResult<DashboardStats>> GetDashboardStats()
     {
         return Ok(await _analyticsService.GetDashboardStats());

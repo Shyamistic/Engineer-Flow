@@ -82,3 +82,44 @@ export interface JobRequestFilters {
   sortBy?: string;
   descending?: boolean;
 }
+
+export interface AuditTrailEntry {
+  id: number;
+  entityType: string;
+  entityId?: string;
+  action: string;
+  details: string;
+  user: string;
+  ipAddress?: string;
+  entityTitle?: string;
+  timestamp: string;
+  isFlagged: boolean;
+  flagReason?: string;
+}
+
+export interface AuditPagedResult {
+  items: AuditTrailEntry[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+export interface AuditFilters {
+  page?: number;
+  pageSize?: number;
+  action?: string;
+  entityType?: string;
+  search?: string;
+  from?: string;
+  to?: string;
+  isFlagged?: boolean;
+}
+
+export interface AuditStats {
+  totalEvents: number;
+  last24hEvents: number;
+  last7dEvents: number;
+  topUser: string;
+  recentActions: AuditTrailEntry[];
+}

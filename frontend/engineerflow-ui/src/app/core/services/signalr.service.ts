@@ -13,6 +13,7 @@ export class SignalRService {
   public jobUpdated = signal<any>(null);
   public jobDeleted = signal<number | null>(null);
   public connectionStatus = signal<'Connected' | 'Disconnected' | 'Connecting'>('Disconnected');
+  public auditEntryCreated = signal<any>(null);
 
   public startConnection(token: string) {
     this.connectionStatus.set('Connecting');
@@ -52,6 +53,10 @@ export class SignalRService {
 
     this.hubConnection?.on('JobDeleted', (id) => {
       this.jobDeleted.set(id);
+    });
+
+    this.hubConnection?.on('AuditEntryCreated', (entry) => {
+      this.auditEntryCreated.set(entry);
     });
   }
 

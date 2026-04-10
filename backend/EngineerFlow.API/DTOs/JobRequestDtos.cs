@@ -90,4 +90,18 @@ public record JobRequestSummaryDto(
 
 public record LoginDto([Required] string Username, [Required] string Password);
 public record RegisterDto([Required] string Username, [Required] string Password, string? FullName, UserRole Role = UserRole.User);
-public record AuthResponseDto(string Token, int UserId, string Username, string Role);
+public record AuthResponseDto(string Token, int UserId, string Username, string Role);
+
+public record AuditTrailEntryDto(
+    int Id,
+    string EntityType,
+    string? EntityId,
+    string Action,
+    string Details,
+    string User,
+    string? IpAddress,
+    string? EntityTitle,
+    DateTime Timestamp,
+    bool IsFlagged,
+    string? FlagReason
+);

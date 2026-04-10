@@ -12,5 +12,6 @@ public interface IJobRequestService
     Task<JobRequestResponseDto?> UpdateStatusAsync(int id, RequestStatus newStatus);
     Task<JobRequestResponseDto?> RecordCompletionAsync(int id, RecordCompletionDto dto);
     Task<bool> DeleteAsync(int id);
+    Task<bool> RestoreAsync(int id);
     Task<JobRequestSummaryDto> GetSummaryAsync();
 }

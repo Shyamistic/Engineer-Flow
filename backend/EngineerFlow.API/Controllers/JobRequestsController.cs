@@ -74,8 +74,17 @@ public class JobRequestsController : ControllerBase
         return deleted ? NoContent() : NotFound();
     }
 
+    /// <summary>Restore a softly deleted job request</summary>
+    [HttpPost("{id:int}/restore")]
+    public async Task<IActionResult> Restore(int id)
+    {
+        var restored = await _service.RestoreAsync(id);
+        return restored ? Ok(new { message = "Restored successfully" }) : NotFound();
+    }
+
     /// <summary>Get dashboard summary statistics</summary>
     [HttpGet("summary")]
+    [Microsoft.AspNetCore.OutputCaching.OutputCache(Duration = 10)]
     public async Task<ActionResult<JobRequestSummaryDto>> GetSummary()
         => Ok(await _service.GetSummaryAsync());
 }
